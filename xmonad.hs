@@ -170,33 +170,51 @@ myStartupHook = do
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                 , NS "deadbeef" spawnDeadbeef findDeadbeef manageDeadbeef
+                , NS "Discord" spawnDiscord findDiscord manageDiscord
+                , NS "qutebrowser" spawnBrowser findBrowser manageBrowser
                 , NS "calculator" spawnCalc findCalc manageCalc
                 ]
   where
-    spawnTerm  = myTerminal ++ " -t scratchpad"
-    findTerm   = title =? "scratchpad"
-    manageTerm = customFloating $ W.RationalRect l t w h
+    spawnTerm           = myTerminal ++ " -t scratchpad"
+    findTerm            = title =? "scratchpad"
+    manageTerm          = customFloating $ W.RationalRect l t w h
                where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
-    spawnDeadbeef  = "deadbeef"
-    findDeadbeef   = className =? "Deadbeef"
-    manageDeadbeef = customFloating $ W.RationalRect l t w h
+                 h      = 0.9
+                 w      = 0.9
+                 t      = 0.95 -h
+                 l      = 0.95 -w
+    spawnDiscord        = "discord"
+    findDiscord         = className =? "discord"
+    manageDiscord       = customFloating $ W.RationalRect l t w h
                where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w 
-    spawnCalc  = "qalculate-gtk"
-    findCalc   = className =? "Qalculate-gtk"
-    manageCalc = customFloating $ W.RationalRect l t w h
+                 h      = 0.9
+                 w      = 0.9
+                 t      = 0.95 -h
+                 l      = 0.95 -w
+    spawnBrowser       = "qutebrowser"
+    findBrowser        = className =? "qutebrowser"
+    manageBrowser      = customFloating $ W.RationalRect l t w h
                where
-                 h = 0.5
-                 w = 0.4
-                 t = 0.75 -h
-                 l = 0.70 -w
+                 h      = 0.9
+                 w      = 0.9
+                 t      = 0.95 -h
+                 l      = 0.95 -w
+    spawnDeadbeef       = "deadbeef"
+    findDeadbeef        = className =? "Deadbeef"
+    manageDeadbeef      = customFloating $ W.RationalRect l t w h
+               where
+                 h      = 0.9
+                 w      = 0.9
+                 t      = 0.95 -h
+                 l      = 0.95 -w
+    spawnCalc           = "qalculate-gtk"
+    findCalc            = className =? "Qalculate-gtk"
+    manageCalc          = customFloating $ W.RationalRect l t w h
+               where
+                 h      = 0.5
+                 w      = 0.4
+                 t      = 0.75 -h
+                 l      = 0.70 -w
 
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
@@ -467,6 +485,8 @@ myKeys =
     -- When you toggle them to show, it brings them to your current workspace.
     -- Toggle them to hide and it sends them back to hidden workspace (NSP).
         , ("C-s t", namedScratchpadAction myScratchPads "terminal")
+        , ("C-s d", namedScratchpadAction myScratchPads "discord")
+        , ("C-s b", namedScratchpadAction myScratchPads "qutebrowser")
         , ("C-s m", namedScratchpadAction myScratchPads "deadbeef")
         , ("C-s c", namedScratchpadAction myScratchPads "calculator")
 
