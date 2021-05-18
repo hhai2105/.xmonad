@@ -123,55 +123,11 @@ myStartupHook :: X ()
 myStartupHook = do
     spawn "~/.xmonad/scripts/autostart.sh"
 
--- myColorizer :: Window -> Bool -> X (String, String)
--- myColorizer = colorRangeFromClassName
---                   (0x28,0x2c,0x34) -- lowest inactive bg
---                   (0x28,0x2c,0x34) -- highest inactive bg
---                   (0xc7,0x92,0xea) -- active bg
---                   (0xc0,0xa7,0x9a) -- inactive fg
---                   (0x28,0x2c,0x34) -- active fg
-
--- -- gridSelect menu layout
--- mygridConfig :: p -> GSConfig Window
--- mygridConfig colorizer = (buildDefaultGSConfig myColorizer)
---     { gs_cellheight   = 40
---     , gs_cellwidth    = 200
---     , gs_cellpadding  = 6
---     , gs_originFractX = 0.5
---     , gs_originFractY = 0.5
---     , gs_font         = myFont
---     }
-
--- spawnSelected' :: [(String, String)] -> X ()
--- spawnSelected' lst = gridselect conf lst >>= flip whenJust spawn
---     where conf = def
---                    { gs_cellheight   = 40
---                    , gs_cellwidth    = 200
---                    , gs_cellpadding  = 6
---                    , gs_originFractX = 0.5
---                    , gs_originFractY = 0.5
---                    , gs_font         = myFont
---                    }
-
--- myAppGrid = [ ("Audacity", "audacity")
---                  , ("Deadbeef", "deadbeef")
---                  , ("Emacs", "emacsclient -c -a emacs")
---                  , ("Firefox", "firefox")
---                  , ("Geany", "geany")
---                  , ("Geary", "geary")
---                  , ("Gimp", "gimp")
---                  , ("Kdenlive", "kdenlive")
---                  , ("LibreOffice Impress", "loimpress")
---                  , ("LibreOffice Writer", "lowriter")
---                  , ("OBS", "obs")
---                  , ("PCManFM", "pcmanfm")
---                  ]
-
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                 , NS "deadbeef" spawnDeadbeef findDeadbeef manageDeadbeef
-                , NS "Discord" spawnDiscord findDiscord manageDiscord
-                , NS "qutebrowser" spawnBrowser findBrowser manageBrowser
+                , NS "discord" spawnDiscord findDiscord manageDiscord
+                , NS "firefox" spawnBrowser findBrowser manageBrowser
                 , NS "calculator" spawnCalc findCalc manageCalc
                 ]
   where
@@ -191,9 +147,9 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                  w      = 0.9
                  t      = 0.95 -h
                  l      = 0.95 -w
-    spawnBrowser       = "qutebrowser"
-    findBrowser        = className =? "qutebrowser"
-    manageBrowser      = customFloating $ W.RationalRect l t w h
+    spawnBrowser        = "firefox"
+    findBrowser         = className =? "firefox"
+    manageBrowser       = customFloating $ W.RationalRect l t w h
                where
                  h      = 0.9
                  w      = 0.9
@@ -345,27 +301,27 @@ myManageHook = composeAll
      -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
      -- I'm doing it this way because otherwise I would have to write out the full
      -- name of my workspaces and the names would be very long if using clickable workspaces.
-     [ className =? "confirm"         --> doFloat
-     , className =? "file_progress"   --> doFloat
-     , className =? "dialog"          --> doFloat
-     , className =? "download"        --> doFloat
-     , className =? "error"           --> doFloat
-     , className =? "Gimp"            --> doFloat
-     , className =? "notification"    --> doFloat
-     , className =? "pinentry-gtk-2"  --> doFloat
-     , className =? "splash"          --> doFloat
-     , className =? "toolbar"         --> doFloat
+     [ className =? "confirm"                   --> doFloat
+     , className =? "file_progress"             --> doFloat
+     , className =? "dialog"                    --> doFloat
+     , className =? "download"                  --> doFloat
+     , className =? "error"                     --> doFloat
+     , className =? "Gimp"                      --> doFloat
+     , className =? "notification"              --> doFloat
+     , className =? "pinentry-gtk-2"            --> doFloat
+     , className =? "splash"                    --> doFloat
+     , className =? "toolbar"                   --> doFloat
      , title =? "Oracle VM VirtualBox Manager"  --> doFloat
-     , title =? "Mozilla Firefox"     --> doShift ( myWorkspaces !! 3 )
-     , className =? "brave-browser"   --> doShift ( myWorkspaces !! 3 )
-     , className =? "discord"         --> doShift ( myWorkspaces !! 6 )
-     , className =? "zoom"            --> doShift ( myWorkspaces !! 8 )
-     , className =? "qutebrowser"     --> doShift ( myWorkspaces !! 3 )
-     , className =? "Mail"            --> doShift ( myWorkspaces !! 5 )
-     , className =? "Thunderbird"     --> doShift ( myWorkspaces !! 5 )
-     , className =? "mpv"             --> doShift ( myWorkspaces !! 7 )
-     , className =? "Gimp"            --> doShift ( myWorkspaces !! 2 )
-     , className =? "Write"           --> doShift ( myWorkspaces !! 2 )
+     -- , title =? "Mozilla Firefox"               --> doShift ( myWorkspaces !! 3 )
+     , className =? "brave-browser"             --> doShift ( myWorkspaces !! 3 )
+     -- , className =? "discord"                   --> doShift ( myWorkspaces !! 6 )
+     , className =? "zoom"                      --> doShift ( myWorkspaces !! 8 )
+     , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
+     , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
+     , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
+     , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
+     , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
+     , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
      -- , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
      , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      , isFullscreen -->  doFullFloat
@@ -486,7 +442,7 @@ myKeys =
     -- Toggle them to hide and it sends them back to hidden workspace (NSP).
         , ("C-s t", namedScratchpadAction myScratchPads "terminal")
         , ("C-s d", namedScratchpadAction myScratchPads "discord")
-        , ("C-s b", namedScratchpadAction myScratchPads "qutebrowser")
+        , ("C-s b", namedScratchpadAction myScratchPads "firefox")
         , ("C-s m", namedScratchpadAction myScratchPads "deadbeef")
         , ("C-s c", namedScratchpadAction myScratchPads "calculator")
 
