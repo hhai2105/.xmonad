@@ -367,7 +367,6 @@ myKeys =
         , ("M-<Return>", spawn (myTerminal))
         , ("C-M1-w", spawn myBrowser)
         , ("C-M1-e", spawn myEditor)
-        , ("C-M1-d", spawn "discord")
         , ("C-M1-n", spawn myNote)
         , ("C-M1-m", spawn myEmail)
         , ("C-M1-o", spawn myOffice)

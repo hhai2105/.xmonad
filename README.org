@@ -174,9 +174,15 @@ myStartupHook = do
 #+END_SRC
 * Scratchpads
 Allows to have several floating scratchpads running different applications.  Import Util.NamedScratchpad and bind a key to namedScratchpadSpawnAction.  In the example below, I have created named scratchpads for:
-+ alacritty -- my terminal
-+ mocp -- a terminal music player
-+ qalculate-gtk -- a nice calculator
+|---------------+------------------------|
+| Programs      | Description            |
+|---------------+------------------------|
+| alacritty     | my Terminal            |
+| deadBeef      | Preffered Music Player |
+| Discord       | Chat Software          |
+| firefox       | quick browser          |
+| qalculate-gtk | a nice calculator      |
+|---------------+------------------------|
 
 #+BEGIN_SRC haskell
 myScratchPads :: [NamedScratchpad]
@@ -442,7 +448,6 @@ myKeys =
 #+END_SRC
 
 ** Dmenu
-
 #+BEGIN_SRC haskell
     -- Run Prompt
         , ("M-S-<Return>", spawn mySearch) -- Dmenu
@@ -465,7 +470,6 @@ myKeys =
         , ("M-<Return>", spawn (myTerminal))
         , ("C-M1-w", spawn myBrowser)
         , ("C-M1-e", spawn myEditor)
-        , ("C-M1-d", spawn "discord")
         , ("C-M1-n", spawn myNote)
         , ("C-M1-m", spawn myEmail)
         , ("C-M1-o", spawn myOffice)
