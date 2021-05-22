@@ -121,7 +121,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-    spawnOnce "~/.xmonad/scripts/autostart.sh"
+    spawn "~/.xmonad/scripts/autostart.sh"
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
