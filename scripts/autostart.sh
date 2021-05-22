@@ -17,7 +17,7 @@ function run {
 #xrandr --output LVDS1 --mode 1366x768 --output DP3 --mode 1920x1080 --right-of LVDS1
 #xrandr --output HDMI2 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output VIRTUAL1 --off
 (sleep 1; autorandr -c ) &
-
+(sleep 2; run $HOME/.config/polybar/launch.sh) &
 
 
 
@@ -37,8 +37,6 @@ run ibus-daemon -d &
 run emacs --daemon &
 numlockx on &
 blueberry-tray &
-picom --config $HOME/.xmonad/scripts/picom.conf &
+picom &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
-(sleep 2; run $HOME/.config/polybar/launch.sh) &
-

@@ -108,7 +108,7 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 mySearch :: String;
-mySearch = "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'"
+mySearch = "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=15'"
 
 myOffice :: String;
 myOffice = "libreoffice";
@@ -122,17 +122,6 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 myStartupHook :: X ()
 myStartupHook = do
     spawnOnce "~/.xmonad/scripts/autostart.sh"
-    -- spawnOnce "xsetroot -cursor_name left_ptr"
-    -- spawnOnce "nitrogen --restore"
-    -- spawnOnce "ibus-daemon"
-    -- spawnOnce "nm-applet"
-    -- spawnOnce "imwheel"
-    -- spawnOnce "emacs --daemon"
-    -- spawnOnce "numlockx on"
-    -- spawnOnce "blueberry-tray"
-    -- spawnOnce "picom"
-    -- spawnOnce"/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-    -- spawnOnce"/usr/lib/xfce4/notifyd/xfce4-notifyd"
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
@@ -419,6 +408,7 @@ myKeys =
 
     -- Layouts
         , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
+        , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
         , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
 
     -- Increase/decrease windows in the master pane or the stack
