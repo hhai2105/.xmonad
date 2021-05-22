@@ -170,7 +170,7 @@ These are commands we want XMonad to execute on startup, such as running a compo
 #+BEGIN_SRC haskell
 myStartupHook :: X ()
 myStartupHook = do
-    spawn "~/.xmonad/scripts/autostart.sh"
+    spawnOnce "~/.xmonad/scripts/autostart.sh"
 #+END_SRC
 * Scratchpads
 Allows to have several floating scratchpads running different applications.  Import Util.NamedScratchpad and bind a key to namedScratchpadSpawnAction.  In the example below, I have created named scratchpads for:
