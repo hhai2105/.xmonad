@@ -292,8 +292,8 @@ dbusOutput dbus str = do
 myWorkspaces = [" dev ", " sys ", " note ", "www ", " doc ", " mail ", " chat ", " media ", " misc "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
-clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
-    where i = fromJust $ M.lookup ws myWorkspaceIndices
+-- clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
+--     where i = fromJust $ M.lookup ws myWorkspaceIndices #+END_SRC
 
 myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
@@ -503,7 +503,13 @@ main = do
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
-        , logHook            = dynamicLogWithPP(myLogHook dbus)
+        , logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
+              -- the following variables beginning with 'pp' are settings for xmobar.
+              {
+                ppOutput = dbusOutput dbus
+              , ppExtras  = [windowCount]                                     -- # of windows current workspace
+              , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                    -- order of things in xmobar
+              }
         , layoutHook         = showWName' myShowWNameTheme $ myLayoutHook
         , focusFollowsMouse  = myFocusFollowsMouse
         , workspaces         = myWorkspaces

@@ -370,10 +370,10 @@ I have made my workspaces in xmobar "clickable." Clickable workspaces means the 
 myWorkspaces = [" dev ", " sys ", " note ", "www ", " doc ", " mail ", " chat ", " media ", " misc "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
-clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
-    where i = fromJust $ M.lookup ws myWorkspaceIndices
-#+END_SRC
+-- clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
+--     where i = fromJust $ M.lookup ws myWorkspaceIndices #+END_SRC
 
+#+END_SRC
 #+RESULTS:
 : <interactive>:14:5-9: error: parse error on input ‘where’
 
@@ -630,7 +630,19 @@ main = do
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
-        , logHook            = dynamicLogWithPP(myLogHook dbus)
+        , logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
+              -- the following variables beginning with 'pp' are settings for xmobar.
+              { ppOutput = dbusOutput dbus
+              , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace
+              , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
+              , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable -- Hidden workspaces
+              , ppHiddenNoWindows = xmobarColor "#c792ea" ""  . clickable     -- Hidden workspaces (no windows)
+              , ppTitle = xmobarColor "#b3afc2" "" . shorten 60               -- Title of active window
+              , ppSep =  "<fc=#666666> <fn=1>|</fn> </fc>"                    -- Separator character
+              , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!"            -- Urgent workspace
+              , ppExtras  = [windowCount]                                     -- # of windows current workspace
+              , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                    -- order of things in xmobar
+              }
         , layoutHook         = showWName' myShowWNameTheme $ myLayoutHook
         , focusFollowsMouse  = myFocusFollowsMouse
         , workspaces         = myWorkspaces
@@ -640,3 +652,6 @@ main = do
         } `additionalKeysP` myKeys
         `additionalMouseBindings` myMouseBindings
 #+END_SRC
+
+#+RESULTS:
+: <interactive>:40:9: error: parse error on input ‘`’
