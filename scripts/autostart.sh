@@ -34,7 +34,7 @@ run imwheel &
 run xfce4-power-manager &
 # run volumeicon &
 run ibus-daemon -d &
-run emacs --daemon &
+run LC_CTYPE=ja_JP.UTF-8 emacs --daemon &
 numlockx on &
 blueberry-tray &
 picom &
