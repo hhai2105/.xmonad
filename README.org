@@ -14,6 +14,7 @@
 - [[#managehook][Managehook]]
 - [[#keybindings][Keybindings]]
   - [[#mouse-bindings][Mouse Bindings]]
+  - [[#workspaces-1][Workspaces]]
   - [[#xmonad][xmonad]]
   - [[#dmenu][Dmenu]]
   - [[#useful-programs-shortcuts][Useful Programs Shortcuts]]
@@ -123,7 +124,7 @@ myTerminal :: String
 myTerminal = "alacritty"    -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "qutebrowser"  -- Sets qutebrowser as browser
+myBrowser = "brave"  -- Sets brave as browser
 
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
@@ -349,7 +350,8 @@ loghook with dbus connection for polybar
 
 #+BEGIN_SRC haskell
 myLogHook :: D.Client -> PP
-myLogHook dbus = def { ppOutput = dbusOutput dbus }
+myLogHook dbus = def { ppOutput = dbusOutput dbus
+                       }
 dbusOutput :: D.Client -> String -> IO ()
 dbusOutput dbus str = do
     let signal = (D.signal objectPath interfaceName memberName) {
@@ -363,13 +365,10 @@ dbusOutput dbus str = do
 #+END_SRC
 
 * Workspaces
-I have made my workspaces in xmobar "clickable." Clickable workspaces means the mouse can be used to switch workspaces. This requires /xdotool/ to be installed. You need to use UnsafeStdInReader instead of simply StdInReader in your xmobar config so you can pass actions to it.
 
 #+begin_src haskell
 -- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
-myWorkspaces = [" dev ", " sys ", " note ", "www ", " doc ", " mail ", " chat ", " media ", " misc "]
-myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
-
+myWorkspaces = ["NSP", "dev", "sys", "note", "www", "doc", "mail", "chat", "media", "misc"]
 -- clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
 --     where i = fromJust $ M.lookup ws myWorkspaceIndices #+END_SRC
 
@@ -398,17 +397,15 @@ myManageHook = composeAll
      , className =? "splash"                    --> doFloat
      , className =? "toolbar"                   --> doFloat
      , title =? "Oracle VM VirtualBox Manager"  --> doFloat
-     -- , title =? "Mozilla Firefox"               --> doShift ( myWorkspaces !! 3 )
-     , className =? "brave-browser"             --> doShift ( myWorkspaces !! 3 )
-     -- , className =? "discord"                   --> doShift ( myWorkspaces !! 6 )
-     , className =? "zoom"                      --> doShift ( myWorkspaces !! 8 )
-     , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
-     , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
-     , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
-     , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
-     , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
-     , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
-     -- , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
+     , className =? "zoom"                      --> doShift ( myWorkspaces !! 7 )
+     , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 4 )
+     , className =? "Mail"                      --> doShift ( myWorkspaces !! 6 )
+     , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 6 )
+     , className =? "Brave-browser"             --> doShift ( myWorkspaces !! 4 )
+     , className =? "mpv"                       --> doShift ( myWorkspaces !! 8 )
+     , className =? "Gimp"                      --> doShift ( myWorkspaces !! 3 )
+     , className =? "Write"                     --> doShift ( myWorkspaces !! 3 )
+     , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 9 )
      , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      , isFullscreen -->  doFullFloat
      ] <+> namedScratchpadManageHook myScratchPads
@@ -437,14 +434,44 @@ myMouseBindings =
     ]
 #+end_src
 
+** Workspaces
+#+begin_src haskell
+
+myWorkspaceKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
+
+  [((m .|. modMask, k), windows $ f i)
+
+  --Keyboard layouts
+  --qwerty users use this line
+   | (i, k) <- zip (XMonad.workspaces conf) [xK_F13,xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
+
+  --French Azerty users use this line
+  -- | (i, k) <- zip (XMonad.workspaces conf) [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe, xK_parenleft, xK_minus, xK_egrave, xK_underscore, xK_ccedilla , xK_agrave]
+
+  --Belgian Azerty users use this line
+  -- | (i, k) <- zip (XMonad.workspaces conf) [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe, xK_parenleft, xK_section, xK_egrave, xK_exclam, xK_ccedilla, xK_agrave]
+
+      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)
+      , (\i -> W.greedyView i . W.shift i, shiftMask)]]
+
+   ++
+  -- ctrl-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
+  -- ctrl-shift-{w,e,r}, Move client to screen 1, 2, or 3
+  [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+      | (key, sc) <- zip [xK_w, xK_e] [0..]
+      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+#+end_src
+
 ** xmonad
 
 #+BEGIN_SRC haskell
 myKeys :: [(String, X ())]
 myKeys =
     -- Xmonad
-        [ ("M1-r", spawn "xmonad --recompile")  -- Recompiles xmonad
+        [
+          ("M1-r", spawn "xmonad --recompile")  -- Recompiles xmonad
         , ("M-S-r", spawn "xmonad --restart")    -- Restarts xmonad
+        , ("M1-<F4>", spawn "arcolinux-logout")    -- Restarts xmonad
 #+END_SRC
 
 ** Dmenu
@@ -529,8 +556,8 @@ myKeys =
         , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
 
     -- Window resizing
-        , ("M-h", sendMessage Shrink)                   -- Shrink horiz window width
-        , ("M-l", sendMessage Expand)                   -- Expand horiz window width
+        , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
+        , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
         , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
         , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
 
@@ -614,44 +641,29 @@ This is the "main" of XMonad. This where everything in our configs comes togethe
 #+BEGIN_SRC haskell
 main :: IO ()
 main = do
-    -- the xmonad, ya know...what the WM is named after!
     dbus <- D.connectSession
     -- Request access to the DBus name
     _ <- D.requestName dbus (D.busName_ "org.xmonad.Log")
         [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+    -- the xmonad, ya know...what the WM is named after!
     xmonad $ ewmh def
-        { manageHook         = myManageHook <+> manageDocks
-        , handleEventHook    = docksEventHook
-                               -- Uncomment this line to enable fullscreen support on things like YouTube/Netflix.
-                               -- This works perfect on SINGLE monitor systems. On multi-monitor systems,
+        { manageHook            = myManageHook <+> manageDocks
+        , handleEventHook       = docksEventHook
+                               -- Uncomment this line to enable works perfect on SINGLE monitor systems. On multi-monitor systems,
                                -- it adds a border around the window if screen does not have focus. So, my solution
                                -- is to use a keybinding to toggle fullscreen noborders instead.  (M-<Space>)
                                -- <+> fullscreenEventHook
-        , modMask            = myModMask
-        , terminal           = myTerminal
-        , startupHook        = myStartupHook
-        , logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
-              -- the following variables beginning with 'pp' are settings for xmobar.
-              { ppOutput = dbusOutput dbus
-              , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace
-              , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
-              , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable -- Hidden workspaces
-              , ppHiddenNoWindows = xmobarColor "#c792ea" ""  . clickable     -- Hidden workspaces (no windows)
-              , ppTitle = xmobarColor "#b3afc2" "" . shorten 60               -- Title of active window
-              , ppSep =  "<fc=#666666> <fn=1>|</fn> </fc>"                    -- Separator character
-              , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!"            -- Urgent workspace
-              , ppExtras  = [windowCount]                                     -- # of windows current workspace
-              , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                    -- order of things in xmobar
-              }
-        , layoutHook         = showWName' myShowWNameTheme $ myLayoutHook
-        , focusFollowsMouse  = myFocusFollowsMouse
-        , workspaces         = myWorkspaces
-        , borderWidth        = myBorderWidth
-        , normalBorderColor  = myNormColor
-        , focusedBorderColor = myFocusColor
+        , modMask               = myModMask
+        , terminal              = myTerminal
+        , startupHook           = myStartupHook
+        , layoutHook            = showWName' myShowWNameTheme $ myLayoutHook
+        , logHook               = dynamicLogWithPP (myLogHook dbus)
+        , focusFollowsMouse     = myFocusFollowsMouse
+        , workspaces            = myWorkspaces
+        , keys                  = myWorkspaceKeys
+        , borderWidth           = myBorderWidth
+        , normalBorderColor     = myNormColor
+        , focusedBorderColor    = myFocusColor
         } `additionalKeysP` myKeys
         `additionalMouseBindings` myMouseBindings
 #+END_SRC
-
-#+RESULTS:
-: <interactive>:40:9: error: parse error on input ‘`’
