@@ -290,7 +290,7 @@ dbusOutput dbus str = do
     memberName = D.memberName_ "Update"
 
 -- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
-myWorkspaces = ["NSP", "dev", "sys", "note", "www", "doc", "mail", "chat", "media", "misc"]
+myWorkspaces = ["dev", "sys", "note", "www", "doc", "mail", "chat", "media", "misc", "NSP"]
 -- clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
 --     where i = fromJust $ M.lookup ws myWorkspaceIndices #+END_SRC
 
@@ -311,14 +311,14 @@ myManageHook = composeAll
      , className =? "splash"                    --> doFloat
      , className =? "toolbar"                   --> doFloat
      , title =? "Oracle VM VirtualBox Manager"  --> doFloat
-     , className =? "zoom"                      --> doShift ( myWorkspaces !! 7 )
-     , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 4 )
-     , className =? "Mail"                      --> doShift ( myWorkspaces !! 6 )
-     , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 6 )
-     , className =? "Brave-browser"             --> doShift ( myWorkspaces !! 4 )
-     , className =? "mpv"                       --> doShift ( myWorkspaces !! 8 )
-     , className =? "Gimp"                      --> doShift ( myWorkspaces !! 3 )
-     , className =? "Write"                     --> doShift ( myWorkspaces !! 3 )
+     , className =? "zoom"                      --> doShift ( myWorkspaces !! 6 )
+     , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
+     , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
+     , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
+     , className =? "Brave-browser"             --> doShift ( myWorkspaces !! 3 )
+     , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
+     , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
+     , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
      , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 9 )
      , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      , isFullscreen -->  doFullFloat
@@ -347,7 +347,7 @@ myWorkspaceKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   --Keyboard layouts
   --qwerty users use this line
-   | (i, k) <- zip (XMonad.workspaces conf) [xK_F13,xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0]
+   | (i, k) <- zip (XMonad.workspaces conf) [xK_1,xK_2,xK_3,xK_4,xK_5,xK_6,xK_7,xK_8,xK_9,xK_0,xK_F13]
 
   --French Azerty users use this line
   -- | (i, k) <- zip (XMonad.workspaces conf) [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe, xK_parenleft, xK_minus, xK_egrave, xK_underscore, xK_ccedilla , xK_agrave]
@@ -399,26 +399,29 @@ myKeys =
         , ("C-<F11>", spawn "wacom_main")
         , ("C-<F12>", spawn "wacom_side")
 
-    -- Kill windows
+        --Toggle Polybar
+        , ("M-y", spawn $ "polybar-msg cmd toggle")
+
+        -- Kill windows
         , ("M-S-q", kill1)     -- Kill the currently focused client
 
-    -- Workspaces
+        -- Workspaces
         , ("M-.", nextScreen)  -- Switch focus to next monitor
         , ("M-,", prevScreen)  -- Switch focus to prev monitor
         , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
         , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
-    -- Floating windows
+        -- Floating windows
         , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
         , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
 
-    -- Increase/decrease spacing (gaps)
+        -- Increase/decrease spacing (gaps)
         , ("C-M1-j", decWindowSpacing 4)         -- Decrease window spacing
         , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
         , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
         , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
 
-    -- Windows navigation
+        -- Windows navigation
         , ("M-m", windows W.focusMaster)  -- Move focus to the master window
         , ("M-j", windows W.focusDown)    -- Move focus to the next window
         , ("M-k", windows W.focusUp)      -- Move focus to the prev window
@@ -429,25 +432,25 @@ myKeys =
         , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
         , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
 
-    -- Layouts
+        -- Layouts
         , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
         , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
         , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
 
-    -- Increase/decrease windows in the master pane or the stack
+        -- Increase/decrease windows in the master pane or the stack
         , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
         , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease # of clients master pane
         , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
         , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
 
-    -- Window resizing
+        -- Window resizing
         , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
         , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
         , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
         , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
 
-    -- Sublayouts
-    -- This is used to push windows to tabbed sublayouts, or pull them out of it.
+        -- Sublayouts
+        -- This is used to push windows to tabbed sublayouts, or pull them out of it.
         , ("M-C-h", sendMessage $ pullGroup L)
         , ("M-C-l", sendMessage $ pullGroup R)
         , ("M-C-k", sendMessage $ pullGroup U)
@@ -474,21 +477,11 @@ myKeys =
         , ("M-u h", spawn "deadbeef --prev")
 
     -- Emacs (CTRL-e followed by a key)
-        -- , ("C-e e", spawn myEmacs)                 -- start emacs
-        , ("C-e e", spawn (myEmacs ++ ("--eval '(dashboard-refresh-buffer)'")))   -- emacs dashboard
+        , ("C-e e", spawn myEmacs)                 -- start emacs
         , ("C-e b", spawn (myEmacs ++ ("--eval '(ibuffer)'")))   -- list buffers
         , ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'"))) -- dired
-        -- , ("C-e i", spawn (myEmacs ++ ("--eval '(erc)'")))       -- erc irc client
-        -- , ("C-e m", spawn (myEmacs ++ ("--eval '(mu4e)'")))      -- mu4e email
-        -- , ("C-e n", spawn (myEmacs ++ ("--eval '(elfeed)'")))    -- elfeed rss
         , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))    -- eshell
-        -- , ("C-e t", spawn (myEmacs ++ ("--eval '(mastodon)'")))  -- mastodon.el
-        -- , ("C-e v", spawn (myEmacs ++ ("--eval '(vterm nil)'"))) -- vterm if on GNU Emacs
         , ("C-e v", spawn (myEmacs ++ ("--eval '(+vterm/here nil)'"))) -- vterm if on Doom Emacs
-        -- , ("C-e w", spawn (myEmacs ++ ("--eval '(eww \"distrotube.com\")'"))) -- eww browser if on GNU Emacs
-        , ("C-e w", spawn (myEmacs ++ ("--eval '(doom/window-maximize-buffer(eww \"distrotube.com\"))'"))) -- eww browser if on Doom Emacs
-        -- emms is an emacs audio player. I set it to auto start playing in a specific directory.
-        , ("C-e a", spawn (myEmacs ++ ("--eval '(emms)' --eval '(emms-play-directory-tree \"~/Music/Non-Classical/70s-80s/\")'")))
 
     -- Multimedia Keys
         , ("<XF86AudioPlay>", spawn "deadbeef --play-pause")
@@ -501,8 +494,8 @@ myKeys =
         , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
         , ("<XF86TouchpadToggle>", spawn "touchpad_toggle")
         , ("<Print>", spawn "flameshot gui")
-        , ("C-<Print>", spawn "flameshot screen")
-        , ("C-S-<Print>", spawn "flameshot full")
+        , ("C-<Print>", spawn "flameshot screen -c")
+        , ("C-S-<Print>", spawn "flameshot full -c")
         ]
     -- The following lines are needed for named scratchpads.
           where nonNSP          = WSIs (return (\ws -> W.tag ws /= "NSP"))

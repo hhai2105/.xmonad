@@ -26,6 +26,7 @@ run $HOME/.config/polybar/launch.sh;
 xsetroot -cursor_name left_ptr &
 nitrogen --restore &
 
+run audio-fix &
 run nm-applet &
 run imwheel &
 # run pamac-tray &
