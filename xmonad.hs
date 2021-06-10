@@ -90,7 +90,7 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 -- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myNote :: String;           -- Sets Handwritten Notetaking app
-myNote = "Write_app";
+myNote = "Write";
 
 myEmail :: String;           -- Sets Handwritten Notetaking app
 myEmail = "thunderbird";
@@ -336,8 +336,8 @@ myMouseBindings =
     , ((mod4Mask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
 
     --wacom
-    , ((0, 16), (\w -> spawn "wacom_main"))
-    , ((0, 15), (\w -> spawn "wacom_side"))
+    , ((0, 16), (\w -> spawn "wacom-main"))
+    , ((0, 15), (\w -> spawn "wacom-side"))
 
     ]
 
@@ -396,8 +396,8 @@ myKeys =
         , ("C-M1-p", spawn myPass)
 
     -- Useful programs to have a keybinding for launch
-        , ("C-<F11>", spawn "wacom_main")
-        , ("C-<F12>", spawn "wacom_side")
+        , ("C-<F11>", spawn "wacom-main")
+        , ("C-<F12>", spawn "wacom-side")
 
         --Toggle Polybar
         , ("M-y", spawn $ "polybar-msg cmd toggle")
@@ -492,7 +492,7 @@ myKeys =
         , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 1%+ unmute")
         , ("<XF86MonBrightnessUp>", spawn "lux -a 1000")
         , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
-        , ("<XF86TouchpadToggle>", spawn "touchpad_toggle")
+        , ("<XF86TouchpadToggle>", spawn "touchpad-toggle")
         , ("<Print>", spawn "flameshot gui")
         , ("C-<Print>", spawn "flameshot screen -c")
         , ("C-S-<Print>", spawn "flameshot full -c")

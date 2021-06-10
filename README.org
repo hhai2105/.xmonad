@@ -133,7 +133,7 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 -- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myNote :: String;           -- Sets Handwritten Notetaking app
-myNote = "Write_app";
+myNote = "Write";
 
 myEmail :: String;           -- Sets Handwritten Notetaking app
 myEmail = "thunderbird";
@@ -162,6 +162,25 @@ myPass = "bitwarden";
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 #+END_SRC
+
+#+RESULTS:
+#+begin_example
+<interactive>:49:45-56: error:
+    Not in scope: ‘W.integrate'’
+    No module named ‘W’ is imported.
+
+<interactive>:49:60-66: error:
+    Not in scope: ‘W.stack’
+    No module named ‘W’ is imported.
+
+<interactive>:49:70-80: error:
+    Not in scope: ‘W.workspace’
+    No module named ‘W’ is imported.
+
+<interactive>:49:84-92: error:
+    Not in scope: ‘W.current’
+    No module named ‘W’ is imported.
+#+end_example
 
 * Autostart (The Startup Hook)
 
@@ -427,8 +446,8 @@ myMouseBindings =
     , ((mod4Mask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
 
     --wacom
-    , ((0, 16), (\w -> spawn "wacom_main"))
-    , ((0, 15), (\w -> spawn "wacom_side"))
+    , ((0, 16), (\w -> spawn "wacom-main"))
+    , ((0, 15), (\w -> spawn "wacom-side"))
 
     ]
 #+end_src
@@ -509,8 +528,8 @@ myKeys =
 
 #+BEGIN_SRC haskell
     -- Useful programs to have a keybinding for launch
-        , ("C-<F11>", spawn "wacom_main")
-        , ("C-<F12>", spawn "wacom_side")
+        , ("C-<F11>", spawn "wacom-main")
+        , ("C-<F12>", spawn "wacom-side")
 #+END_SRC
 
 ** Workspaces configuration
@@ -620,7 +639,7 @@ myKeys =
         , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 1%+ unmute")
         , ("<XF86MonBrightnessUp>", spawn "lux -a 1000")
         , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
-        , ("<XF86TouchpadToggle>", spawn "touchpad_toggle")
+        , ("<XF86TouchpadToggle>", spawn "touchpad-toggle")
         , ("<Print>", spawn "flameshot gui")
         , ("C-<Print>", spawn "flameshot screen -c")
         , ("C-S-<Print>", spawn "flameshot full -c")
