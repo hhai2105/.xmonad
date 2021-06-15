@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/zsh
 
 #use xrandr and arandr to know the
 #possible resolutions, frequency

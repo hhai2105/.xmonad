@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/zsh
 
 function run {
   if ! pgrep $1 ;
@@ -28,7 +28,6 @@ nitrogen --restore &
 
 run audio-fix &
 run nm-applet &
-run imwheel &
 # run pamac-tray &
 run xfce4-power-manager &
 # run volumeicon &

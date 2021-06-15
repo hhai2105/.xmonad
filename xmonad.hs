@@ -108,7 +108,7 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 mySearch :: String;
-mySearch = "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=15'"
+mySearch = "dmenu_run -i -nb '#1f1147' -nf '#ff2afc' -sb '#ff2afc' -sf '#1f1147' -fn 'NotoMonoRegular:pixelsize=25'"
 
 myOffice :: String;
 myOffice = "libreoffice";
@@ -190,53 +190,11 @@ tall     = renamed [Replace "tall"]
            $ limitWindows 12
            $ mySpacing 8
            $ ResizableTall 1 (3/100) (1/2) []
-magnify  = renamed [Replace "magnify"]
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
-           $ magnifier
-           $ limitWindows 12
-           $ mySpacing 8
-           $ ResizableTall 1 (3/100) (1/2) []
-monocle  = renamed [Replace "monocle"]
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 20 Full
 floats   = renamed [Replace "floats"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
            -- $ subLayout [] (smartBorders Simplest)
            $ limitWindows 20 simplestFloat
-grid     = renamed [Replace "grid"]
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 12
-           $ mySpacing 0
-           $ mkToggle (single MIRROR)
-           $ Grid (16/10)
--- spirals  = renamed [Replace "spirals"]
-           -- $ windowNavigation
-           -- $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
-           -- $ mySpacing' 8
-           -- $ spiral (6/7)
-threeCol = renamed [Replace "threeCol"]
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 7
-           $ ThreeCol 1 (3/100) (1/2)
--- threeRow = renamed [Replace "threeRow"]
-           -- $ windowNavigation
-           -- $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
-           -- $ limitWindows 7
-           -- Mirror takes a layout and rotates it by 90 degrees.
-           -- So we are applying Mirror to the ThreeCol layout.
-           -- $ Mirror
-           -- $ ThreeCol 1 (3/100) (1/2)
 tabs     = renamed [Replace "tabs"]
            -- I cannot add spacing to this layout because it will
            -- add spacing between window and tabs which looks bad.
@@ -244,19 +202,19 @@ tabs     = renamed [Replace "tabs"]
 
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
-                 , activeColor         = "#46d9ff"
-                 , inactiveColor       = "#313846"
-                 , activeBorderColor   = "#46d9ff"
-                 , inactiveBorderColor = "#282c34"
-                 , activeTextColor     = "#282c34"
-                 , inactiveTextColor   = "#d0d0d0"
+                 , activeColor         = "#ff2afc"
+                 , inactiveColor       = "#1f1147"
+                 , activeBorderColor   = "#ff2afc"
+                 , inactiveBorderColor = "#1f1147"
+                 , activeTextColor     = "#1f1147"
+                 , inactiveTextColor   = "#ff2afc"
                  }
 
 -- Theme for showWName which prints current workspace when you change workspaces.
 myShowWNameTheme :: SWNConfig
 myShowWNameTheme = def
     { swn_font              = "xft:Ubuntu:bold:size=60"
-    , swn_fade              = 1.0
+    , swn_fade              = 0.5
     , swn_bgcolor           = "#1c1f24"
     , swn_color             = "#ffffff"
     }
@@ -265,15 +223,8 @@ myShowWNameTheme = def
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
              where
-               myDefaultLayout =     tall
-                                 ||| magnify
-                                 ||| noBorders monocle
-                                 ||| floats
-                                 ||| noBorders tabs
-                                 ||| grid
-                                 -- ||| spirals
-                                 ||| threeCol
-                                 -- ||| threeRow
+               myDefaultLayout =     noBorders tabs
+                                     ||| tall
 
 myLogHook :: D.Client -> PP
 myLogHook dbus = def { ppOutput = dbusOutput dbus
@@ -375,16 +326,7 @@ myKeys =
 
     -- Run Prompt
         , ("M-S-<Return>", spawn mySearch) -- Dmenu
-
-        -- , ("M-p c", spawn "~/dmscripts/dcolors")  -- pick color from our scheme
-        -- , ("M-p e", spawn "~/dmscripts/dmconf")   -- edit config files
-        -- , ("M-p k", spawn "~/dmscripts/dmkill")   -- kill processes
-        -- , ("M-p m", spawn "~/dmscripts/dman")     -- manpages
-        -- , ("M-p o", spawn "~/dmscripts/dmqute")   -- qutebrowser bookmarks/history
-        -- , ("M-p p", spawn "passmenu")                    -- passmenu
-        -- , ("M-p q", spawn "~/dmscripts/dmlogout") -- logout menu
-        -- , ("M-p r", spawn "~/dmscripts/dmred")    -- reddio (a reddit viewer)
-        -- , ("M-p s", spawn "~/dmscripts/dmsearch") -- search various search engines
+        , ("M-p m", spawn "~/.scripts/dmenu/display")   -- display changing scripts
 
     -- Useful programs to have a keybinding for launch
         , ("M-<Return>", spawn (myTerminal))
@@ -477,11 +419,10 @@ myKeys =
         , ("M-u h", spawn "deadbeef --prev")
 
     -- Emacs (CTRL-e followed by a key)
-        , ("C-e e", spawn myEmacs)                 -- start emacs
-        , ("C-e b", spawn (myEmacs ++ ("--eval '(ibuffer)'")))   -- list buffers
-        , ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'"))) -- dired
-        , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))    -- eshell
-        , ("C-e v", spawn (myEmacs ++ ("--eval '(+vterm/here nil)'"))) -- vterm if on Doom Emacs
+        , ("C-e e", spawn "emacsclient --eval '(emacs-everywhere)'")    -- emacs everywhere
+        , ("C-e b", spawn (myEmacs ++ ("--eval '(ibuffer)'")))          -- list buffers
+        , ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'")))        -- dired
+        , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))           -- eshell
 
     -- Multimedia Keys
         , ("<XF86AudioPlay>", spawn "deadbeef --play-pause")
