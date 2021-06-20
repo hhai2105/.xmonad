@@ -32,7 +32,7 @@ run nm-applet &
 run xfce4-power-manager &
 # run volumeicon &
 run ibus-daemon -d &
-run LC_CTYPE=ja_JP.UTF-8 emacs --daemon &
+run emacs --daemon &
 numlockx on &
 blueberry-tray &
 picom &

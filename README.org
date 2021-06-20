@@ -133,9 +133,9 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 -- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myNote :: String;           -- Sets Handwritten Notetaking app
-myNote = "Write";
+myNote = "write_stylus";
 
-myEmail :: String;           -- Sets Handwritten Notetaking app
+myEmail :: String;           -- Sets default email client
 myEmail = "thunderbird";
 
 myBorderWidth :: Dimension
@@ -151,7 +151,7 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 mySearch :: String;
-mySearch = "dmenu_run -i -nb '#1f1147' -nf '#ff2afc' -sb '#ff2afc' -sf '#1f1147' -fn 'NotoMonoRegular:pixelsize=25'"
+mySearch = "dmenu_run -i -nb '#0c0a20' -nf '#ff2afc' -sb '#ff2afc' -sf '#0c0a20' -fn 'NotoMonoRegular:pixelsize=25'"
 
 myOffice :: String;
 myOffice = "libreoffice";
@@ -162,6 +162,25 @@ myPass = "bitwarden";
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 #+END_SRC
+
+#+RESULTS:
+#+begin_example
+<interactive>:49:45-56: error:
+    Not in scope: ‘W.integrate'’
+    No module named ‘W’ is imported.
+
+<interactive>:49:60-66: error:
+    Not in scope: ‘W.stack’
+    No module named ‘W’ is imported.
+
+<interactive>:49:70-80: error:
+    Not in scope: ‘W.workspace’
+    No module named ‘W’ is imported.
+
+<interactive>:49:84-92: error:
+    Not in scope: ‘W.current’
+    No module named ‘W’ is imported.
+#+end_example
 
 * Autostart (The Startup Hook)
 
@@ -432,7 +451,7 @@ myKeys =
 #+BEGIN_SRC haskell
     -- Run Prompt
         , ("M-S-<Return>", spawn mySearch) -- Dmenu
-        , ("M-p m", spawn "~/.scripts/dmenu/display")   -- display changing scripts
+        , ("M-p p", spawn "~/.scripts/dmenu/display")   -- display changing scripts
 #+END_SRC
 
 ** Useful Programs Shortcuts

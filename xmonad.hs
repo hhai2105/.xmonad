@@ -90,7 +90,7 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 -- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myNote :: String;           -- Sets Handwritten Notetaking app
-myNote = "Write";
+myNote = "write_stylus";
 
 myEmail :: String;           -- Sets Handwritten Notetaking app
 myEmail = "thunderbird";
@@ -108,7 +108,7 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 mySearch :: String;
-mySearch = "dmenu_run -i -nb '#1f1147' -nf '#ff2afc' -sb '#ff2afc' -sf '#1f1147' -fn 'NotoMonoRegular:pixelsize=25'"
+mySearch = "dmenu_run -i -nb '#0c0a20' -nf '#ff2afc' -sb '#ff2afc' -sf '#0c0a20' -fn 'NotoMonoRegular:pixelsize=25'"
 
 myOffice :: String;
 myOffice = "libreoffice";
@@ -326,7 +326,7 @@ myKeys =
 
     -- Run Prompt
         , ("M-S-<Return>", spawn mySearch) -- Dmenu
-        , ("M-p m", spawn "~/.scripts/dmenu/display")   -- display changing scripts
+        , ("M-p p", spawn "~/.scripts/dmenu/display")   -- display changing scripts
 
     -- Useful programs to have a keybinding for launch
         , ("M-<Return>", spawn (myTerminal))
