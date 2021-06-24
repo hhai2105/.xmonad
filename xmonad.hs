@@ -80,7 +80,7 @@ myTerminal :: String
 myTerminal = "alacritty"    -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "brave"  -- Sets brave as browser
+myBrowser = "brave-dev"  -- Sets brave as browser
 
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
@@ -92,7 +92,7 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 myNote :: String;           -- Sets Handwritten Notetaking app
 myNote = "write_stylus";
 
-myEmail :: String;           -- Sets Handwritten Notetaking app
+myEmail :: String;           -- Sets default email client
 myEmail = "thunderbird";
 
 myBorderWidth :: Dimension
@@ -266,7 +266,7 @@ myManageHook = composeAll
      , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
      , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
      , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
-     , className =? "Brave-browser"             --> doShift ( myWorkspaces !! 3 )
+     , className =? "Brave-browser-dev"             --> doShift ( myWorkspaces !! 3 )
      , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
      , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
@@ -455,7 +455,7 @@ main = do
                                -- Uncomment this line to enable works perfect on SINGLE monitor systems. On multi-monitor systems,
                                -- it adds a border around the window if screen does not have focus. So, my solution
                                -- is to use a keybinding to toggle fullscreen noborders instead.  (M-<Space>)
-                               -- <+> fullscreenEventHook
+                               <+> fullscreenEventHook
         , modMask               = myModMask
         , terminal              = myTerminal
         , startupHook           = myStartupHook
