@@ -80,7 +80,7 @@ myTerminal :: String
 myTerminal = "alacritty"    -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "brave-dev"  -- Sets brave as browser
+myBrowser = "qutebrowser"  -- Sets brave as browser
 
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
@@ -114,14 +114,14 @@ myOffice :: String;
 myOffice = "libreoffice";
 
 myPass :: String;
-myPass = "bitwarden";
+myPass = "bitwarden-desktop";
 
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
 myStartupHook :: X ()
 myStartupHook = do
-    spawn "~/.xmonad/scripts/autostart.sh"
+    spawn "~/.scripts/system/autostart.sh"
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
@@ -186,14 +186,14 @@ mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 tall     = renamed [Replace "tall"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
+           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 12
-           $ mySpacing 8
+           $ mySpacing 4
            $ ResizableTall 1 (3/100) (1/2) []
 floats   = renamed [Replace "floats"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
-           -- $ subLayout [] (smartBorders Simplest)
+           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 20 simplestFloat
 tabs     = renamed [Replace "tabs"]
            -- I cannot add spacing to this layout because it will
@@ -223,8 +223,9 @@ myShowWNameTheme = def
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
              where
-               myDefaultLayout =     noBorders tabs
-                                     ||| tall
+               myDefaultLayout =
+                                        tall
+                                        ||| noBorders tabs
 
 myLogHook :: D.Client -> PP
 myLogHook dbus = def { ppOutput = dbusOutput dbus
@@ -262,11 +263,12 @@ myManageHook = composeAll
      , className =? "splash"                    --> doFloat
      , className =? "toolbar"                   --> doFloat
      , title =? "Oracle VM VirtualBox Manager"  --> doFloat
+     , title =? "Messenger Call - Brave"        --> doShift ( myWorkspaces !! 6 )
      , className =? "zoom"                      --> doShift ( myWorkspaces !! 6 )
      , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
      , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
      , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
-     , className =? "Brave-browser-dev"             --> doShift ( myWorkspaces !! 3 )
+     , className =? "Brave-browser-dev"         --> doShift ( myWorkspaces !! 3 )
      , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
      , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
@@ -428,12 +430,12 @@ myKeys =
         , ("<XF86AudioPlay>", spawn "deadbeef --play-pause")
         , ("<XF86AudioPrev>", spawn "deadbeef --prev")
         , ("<XF86AudioNext>", spawn "deadbeef --next")
-        , ("<XF86AudioMute>", spawn "amixer set Master toggle")
-        , ("<XF86AudioLowerVolume>", spawn "amixer set Master 1%- unmute")
-        , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 1%+ unmute")
+        , ("<XF86AudioMute>", spawn "~/.scripts/system/pavolume.sh --togmute")
+        , ("<XF86AudioLowerVolume>", spawn "~/.scripts/system/pavolume.sh --down")
+        , ("<XF86AudioRaiseVolume>", spawn "~/.scripts/system/pavolume.sh --up")
         , ("<XF86MonBrightnessUp>", spawn "lux -a 1000")
         , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
-        , ("<XF86TouchpadToggle>", spawn "touchpad-toggle")
+        , ("<XF86TouchpadToggle>", spawn "$HOME/.scripts/system/touchpad-toggle")
         , ("<Print>", spawn "flameshot gui")
         , ("C-<Print>", spawn "flameshot screen -c")
         , ("C-S-<Print>", spawn "flameshot full -c")
