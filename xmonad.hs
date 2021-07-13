@@ -125,6 +125,7 @@ myStartupHook = do
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
+                , NS "passwordManager" spawnPass findPass managePass
                 , NS "deadbeef" spawnDeadbeef findDeadbeef manageDeadbeef
                 , NS "discord" spawnDiscord findDiscord manageDiscord
                 , NS "firefox" spawnBrowser findBrowser manageBrowser
@@ -147,6 +148,14 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                  w      = 0.9
                  t      = 0.95 -h
                  l      = 0.95 -w
+    spawnPass           = myPass
+    findPass            = className =? "Bitwarden"
+    managePass          = customFloating $ W.RationalRect l t w h
+               where
+                 h      = 0.7
+                 w      = 0.7
+                 t      = 0.75 -h
+                 l      = 0.75 -w
     spawnBrowser        = "firefox"
     findBrowser         = className =? "firefox"
     manageBrowser       = customFloating $ W.RationalRect l t w h
@@ -186,14 +195,12 @@ mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 tall     = renamed [Replace "tall"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 12
            $ mySpacing 4
            $ ResizableTall 1 (3/100) (1/2) []
 floats   = renamed [Replace "floats"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 20 simplestFloat
 tabs     = renamed [Replace "tabs"]
            -- I cannot add spacing to this layout because it will
@@ -268,7 +275,6 @@ myManageHook = composeAll
      , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
      , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
      , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
-     , className =? "Brave-browser-dev"         --> doShift ( myWorkspaces !! 3 )
      , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
      , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
@@ -411,6 +417,7 @@ myKeys =
     -- Toggle them to hide and it sends them back to hidden workspace (NSP).
         , ("C-s t", namedScratchpadAction myScratchPads "terminal")
         , ("C-s d", namedScratchpadAction myScratchPads "discord")
+        , ("C-s p", namedScratchpadAction myScratchPads "passwordManager")
         , ("C-s b", namedScratchpadAction myScratchPads "firefox")
         , ("C-s m", namedScratchpadAction myScratchPads "deadbeef")
         , ("C-s c", namedScratchpadAction myScratchPads "calculator")
@@ -457,7 +464,7 @@ main = do
                                -- Uncomment this line to enable works perfect on SINGLE monitor systems. On multi-monitor systems,
                                -- it adds a border around the window if screen does not have focus. So, my solution
                                -- is to use a keybinding to toggle fullscreen noborders instead.  (M-<Space>)
-                               <+> fullscreenEventHook
+                               -- <+> fullscreenEventHook
         , modMask               = myModMask
         , terminal              = myTerminal
         , startupHook           = myStartupHook
