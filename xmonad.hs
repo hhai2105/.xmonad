@@ -343,7 +343,6 @@ myKeys =
         , ("C-M1-n", spawn myNote)
         , ("C-M1-m", spawn myEmail)
         , ("C-M1-o", spawn myOffice)
-        , ("C-M1-p", spawn myPass)
 
     -- Useful programs to have a keybinding for launch
         , ("C-<F11>", spawn "wacom-main")
