@@ -93,7 +93,7 @@ myNote :: String;           -- Sets Handwritten Notetaking app
 myNote = "write_stylus";
 
 myEmail :: String;           -- Sets default email client
-myEmail = "thunderbird";
+myEmail = "mailspring";
 
 myBorderWidth :: Dimension
 myBorderWidth = 2           -- Sets border width for windows
@@ -275,6 +275,7 @@ myManageHook = composeAll
      , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
      , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
      , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
+     , className =? "Mailspring"               --> doShift ( myWorkspaces !! 5 )
      , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
      , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
