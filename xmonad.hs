@@ -1,4 +1,4 @@
-  -- Base
+-- Base
 import XMonad
 import System.Directory
 import System.IO (hPutStrLn)
@@ -152,10 +152,10 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
     findPass            = className =? "Bitwarden"
     managePass          = customFloating $ W.RationalRect l t w h
                where
-                 h      = 0.7
-                 w      = 0.7
-                 t      = 0.75 -h
-                 l      = 0.75 -w
+                 h      = 0.9
+                 w      = 0.4
+                 t      = 0.95 -h
+                 l      = 0.98 -w
     spawnBrowser        = "firefox"
     findBrowser         = className =? "firefox"
     manageBrowser       = customFloating $ W.RationalRect l t w h
@@ -333,123 +333,123 @@ myKeys =
         , ("M-S-r", spawn "xmonad --restart")    -- Restarts xmonad
         , ("M1-<F4>", spawn "arcolinux-logout")    -- Restarts xmonad
 
-    -- Run Prompt
-        , ("M-S-<Return>", spawn mySearch) -- Dmenu
-        , ("M-p p", spawn "~/.scripts/dmenu/display")   -- display changing scripts
+-- Run Prompt
+    , ("M-S-<Return>", spawn mySearch) -- Dmenu
+    , ("M-p p", spawn "~/.scripts/dmenu/display")   -- display changing scripts
 
-    -- Useful programs to have a keybinding for launch
-        , ("M-<Return>", spawn (myTerminal))
-        , ("C-M1-w", spawn myBrowser)
-        , ("C-M1-e", spawn myEditor)
-        , ("C-M1-n", spawn myNote)
-        , ("C-M1-m", spawn myEmail)
-        , ("C-M1-o", spawn myOffice)
+-- Useful programs to have a keybinding for launch
+    , ("M-<Return>", spawn (myTerminal))
+    , ("C-M1-w", spawn myBrowser)
+    , ("C-M1-e", spawn myEditor)
+    , ("C-M1-n", spawn myNote)
+    , ("C-M1-m", spawn myEmail)
+    , ("C-M1-o", spawn myOffice)
 
-    -- Useful programs to have a keybinding for launch
-        , ("C-<F11>", spawn "wacom-main")
-        , ("C-<F12>", spawn "wacom-side")
+-- Useful programs to have a keybinding for launch
+    , ("C-<F11>", spawn "wacom-main")
+    , ("C-<F12>", spawn "wacom-side")
 
-        --Toggle Polybar
-        , ("M-y", spawn $ "polybar-msg cmd toggle")
+--Toggle Polybar
+    , ("M-y", spawn $ "polybar-msg cmd toggle")
 
-        -- Kill windows
-        , ("M-S-q", kill1)     -- Kill the currently focused client
+-- Kill windows
+    , ("M-S-q", kill1)     -- Kill the currently focused client
 
-        -- Workspaces
-        , ("M-.", nextScreen)  -- Switch focus to next monitor
-        , ("M-,", prevScreen)  -- Switch focus to prev monitor
-        , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
-        , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
+-- Workspaces
+    , ("M-.", nextScreen)  -- Switch focus to next monitor
+    , ("M-,", prevScreen)  -- Switch focus to prev monitor
+    , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
+    , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
-        -- Floating windows
-        , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
-        , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
+-- Floating windows
+    , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
+    , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
 
-        -- Increase/decrease spacing (gaps)
-        , ("C-M1-j", decWindowSpacing 4)         -- Decrease window spacing
-        , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
-        , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
-        , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
+-- Increase/decrease spacing (gaps)
+    , ("C-M1-j", decWindowSpacing 4)         -- Decrease window spacing
+    , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
+    , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
+    , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
 
-        -- Windows navigation
-        , ("M-m", windows W.focusMaster)  -- Move focus to the master window
-        , ("M-j", windows W.focusDown)    -- Move focus to the next window
-        , ("M-k", windows W.focusUp)      -- Move focus to the prev window
-        , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
-        , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
-        , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
-        , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
-        , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
-        , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
+-- Windows navigation
+    , ("M-m", windows W.focusMaster)  -- Move focus to the master window
+    , ("M-j", windows W.focusDown)    -- Move focus to the next window
+    , ("M-k", windows W.focusUp)      -- Move focus to the prev window
+    , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
+    , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
+    , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
+    , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
+    , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
+    , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
 
-        -- Layouts
-        , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
-        , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
-        , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
+-- Layouts
+    , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
+    , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
+    , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
 
-        -- Increase/decrease windows in the master pane or the stack
-        , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
-        , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease # of clients master pane
-        , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
-        , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
+-- Increase/decrease windows in the master pane or the stack
+    , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
+    , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease # of clients master pane
+    , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
+    , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
 
-        -- Window resizing
-        , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
-        , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
-        , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
-        , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
+-- Window resizing
+    , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
+    , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
+    , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
+    , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
 
-        -- Sublayouts
-        -- This is used to push windows to tabbed sublayouts, or pull them out of it.
-        , ("M-C-h", sendMessage $ pullGroup L)
-        , ("M-C-l", sendMessage $ pullGroup R)
-        , ("M-C-k", sendMessage $ pullGroup U)
-        , ("M-C-j", sendMessage $ pullGroup D)
-        , ("M-C-m", withFocused (sendMessage . MergeAll))
-        -- , ("M-C-u", withFocused (sendMessage . UnMerge))
-        , ("M-C-/", withFocused (sendMessage . UnMergeAll))
-        , ("M-C-.", onGroup W.focusUp')    -- Switch focus to next tab
-        , ("M-C-,", onGroup W.focusDown')  -- Switch focus to prev tab
+-- Sublayouts
+-- This is used to push windows to tabbed sublayouts, or pull them out of it.
+    , ("M-C-h", sendMessage $ pullGroup L)
+    , ("M-C-l", sendMessage $ pullGroup R)
+    , ("M-C-k", sendMessage $ pullGroup U)
+    , ("M-C-j", sendMessage $ pullGroup D)
+    , ("M-C-m", withFocused (sendMessage . MergeAll))
+    -- , ("M-C-u", withFocused (sendMessage . UnMerge))
+    , ("M-C-/", withFocused (sendMessage . UnMergeAll))
+    , ("M-C-.", onGroup W.focusUp')    -- Switch focus to next tab
+    , ("M-C-,", onGroup W.focusDown')  -- Switch focus to prev tab
 
-    -- Scratchpads
-    -- Toggle show/hide these programs.  They run on a hidden workspace.
-    -- When you toggle them to show, it brings them to your current workspace.
-    -- Toggle them to hide and it sends them back to hidden workspace (NSP).
-        , ("C-s t", namedScratchpadAction myScratchPads "terminal")
-        , ("C-s d", namedScratchpadAction myScratchPads "discord")
-        , ("C-s p", namedScratchpadAction myScratchPads "passwordManager")
-        , ("C-s b", namedScratchpadAction myScratchPads "firefox")
-        , ("C-s m", namedScratchpadAction myScratchPads "deadbeef")
-        , ("C-s c", namedScratchpadAction myScratchPads "calculator")
+-- Scratchpads
+-- Toggle show/hide these programs.  They run on a hidden workspace.
+-- When you toggle them to show, it brings them to your current workspace.
+-- Toggle them to hide and it sends them back to hidden workspace (NSP).
+    , ("C-s t", namedScratchpadAction myScratchPads "terminal")
+    , ("C-s d", namedScratchpadAction myScratchPads "discord")
+    , ("C-s p", namedScratchpadAction myScratchPads "passwordManager")
+    , ("C-s b", namedScratchpadAction myScratchPads "firefox")
+    , ("C-s m", namedScratchpadAction myScratchPads "deadbeef")
+    , ("C-s c", namedScratchpadAction myScratchPads "calculator")
 
-    -- Controls for deadbeef music player (SUPER-u followed by a key)
-        , ("M-u p", spawn "deadbeef --play-pause")
-        , ("M-u l", spawn "deadbeef --next")
-        , ("M-u h", spawn "deadbeef --prev")
+-- Controls for deadbeef music player (SUPER-u followed by a key)
+    , ("M-u p", spawn "deadbeef --play-pause")
+    , ("M-u l", spawn "deadbeef --next")
+    , ("M-u h", spawn "deadbeef --prev")
 
-    -- Emacs (CTRL-e followed by a key)
-        , ("C-e e", spawn "emacsclient --eval '(emacs-everywhere)'")    -- emacs everywhere
-        , ("C-e b", spawn (myEmacs ++ ("--eval '(ibuffer)'")))          -- list buffers
-        , ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'")))        -- dired
-        , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))           -- eshell
+-- Emacs (CTRL-e followed by a key)
+    , ("C-e e", spawn "emacsclient --eval '(emacs-everywhere)'")    -- emacs everywhere
+    , ("C-e b", spawn (myEmacs ++ ("--eval '(ibuffer)'")))          -- list buffers
+    , ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'")))        -- dired
+    , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))           -- eshell
 
-    -- Multimedia Keys
-        , ("<XF86AudioPlay>", spawn "deadbeef --play-pause")
-        , ("<XF86AudioPrev>", spawn "deadbeef --prev")
-        , ("<XF86AudioNext>", spawn "deadbeef --next")
-        , ("<XF86AudioMute>", spawn "~/.scripts/system/pavolume.sh --togmute")
-        , ("<XF86AudioLowerVolume>", spawn "~/.scripts/system/pavolume.sh --down")
-        , ("<XF86AudioRaiseVolume>", spawn "~/.scripts/system/pavolume.sh --up")
-        , ("<XF86MonBrightnessUp>", spawn "lux -a 1000")
-        , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
-        , ("<XF86TouchpadToggle>", spawn "$HOME/.scripts/system/touchpad-toggle")
-        , ("<Print>", spawn "flameshot gui")
-        , ("C-<Print>", spawn "flameshot screen -c")
-        , ("C-S-<Print>", spawn "flameshot full -c")
-        ]
-    -- The following lines are needed for named scratchpads.
-          where nonNSP          = WSIs (return (\ws -> W.tag ws /= "NSP"))
-                nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
+-- Multimedia Keys
+    , ("<XF86AudioPlay>", spawn "deadbeef --play-pause")
+    , ("<XF86AudioPrev>", spawn "deadbeef --prev")
+    , ("<XF86AudioNext>", spawn "deadbeef --next")
+    , ("<XF86AudioMute>", spawn "~/.scripts/system/pavolume.sh --togmute")
+    , ("<XF86AudioLowerVolume>", spawn "~/.scripts/system/pavolume.sh --down")
+    , ("<XF86AudioRaiseVolume>", spawn "~/.scripts/system/pavolume.sh --up")
+    , ("<XF86MonBrightnessUp>", spawn "lux -a 1000")
+    , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
+    , ("<XF86TouchpadToggle>", spawn "$HOME/.scripts/system/touchpad-toggle")
+    , ("<Print>", spawn "flameshot gui")
+    , ("C-<Print>", spawn "flameshot screen -c")
+    , ("C-S-<Print>", spawn "flameshot full -c")
+    ]
+-- The following lines are needed for named scratchpads.
+      where nonNSP          = WSIs (return (\ws -> W.tag ws /= "NSP"))
+            nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
 
 main :: IO ()
 main = do
