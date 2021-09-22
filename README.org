@@ -16,7 +16,8 @@
   - [[#mouse-bindings][Mouse Bindings]]
   - [[#workspaces-1][Workspaces]]
   - [[#xmonad][xmonad]]
-  - [[#dmenu][Dmenu]]
+  - [[#dmenudeprecated-in-favor-of-rofi][Dmenu(Deprecated in favor of Rofi)]]
+  - [[#rofi][Rofi]]
   - [[#useful-programs-shortcuts][Useful Programs Shortcuts]]
   - [[#drawingpad][DrawingPad]]
   - [[#workspaces-configuration][Workspaces configuration]]
@@ -111,7 +112,6 @@ import qualified DBus.Client as D
 
 * Variables
 It's nice to assign values to stuff that you will use more than once in the config. Setting values for things like font, terminal and editor means you only have to change the value here to make changes globally.
-
 #+BEGIN_SRC haskell
 myFont :: String
 myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=15:antialias=true:hinting=true"
@@ -133,7 +133,7 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 -- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myNote :: String;           -- Sets Handwritten Notetaking app
-myNote = "write_stylus";
+myNote = "xournalpp";
 
 myEmail :: String;           -- Sets default email client
 myEmail = "mailspring";
@@ -151,7 +151,7 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 mySearch :: String;
-mySearch = "dmenu_run -i -nb '#0c0a20' -nf '#ff2afc' -sb '#ff2afc' -sf '#0c0a20' -fn 'NotoMonoRegular:pixelsize=25'"
+mySearch = "rofi -show run -m -4"
 
 myOffice :: String;
 myOffice = "libreoffice";
@@ -162,25 +162,6 @@ myPass = "bitwarden-desktop";
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 #+END_SRC
-
-#+RESULTS:
-#+begin_example
-<interactive>:49:45-56: error:
-    Not in scope: ‘W.integrate'’
-    No module named ‘W’ is imported.
-
-<interactive>:49:60-66: error:
-    Not in scope: ‘W.stack’
-    No module named ‘W’ is imported.
-
-<interactive>:49:70-80: error:
-    Not in scope: ‘W.workspace’
-    No module named ‘W’ is imported.
-
-<interactive>:49:84-92: error:
-    Not in scope: ‘W.current’
-    No module named ‘W’ is imported.
-#+end_example
 
 * Autostart (The Startup Hook)
 
@@ -284,7 +265,6 @@ tall     = renamed [Replace "tall"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
            $ limitWindows 12
-           $ mySpacing 4
            $ ResizableTall 1 (3/100) (1/2) []
 floats   = renamed [Replace "floats"]
            $ windowNavigation
@@ -357,7 +337,6 @@ myWorkspaces = ["dev", "sys", "note", "www", "doc", "mail", "chat", "media", "mi
 
 * Managehook
 Sets some rules for certain programs. Examples include forcing certain programs to always float, or to always appear on a certain workspace.  Forcing programs to a certain workspace with a doShift requires xdotool if you are using clickable workspaces. You need the className or title of the program. Use xprop to get this info.
-
 #+BEGIN_SRC haskell
 myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
@@ -381,10 +360,12 @@ myManageHook = composeAll
      , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
      , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
      , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
-     , className =? "Mailspring"               --> doShift ( myWorkspaces !! 5 )
+     , className =? "Mailspring"                --> doShift ( myWorkspaces !! 5 )
+     , className =? "Gcr-prompter"              --> doShift ( myWorkspaces !! 5 ) -- mailspring's gnome keyring's password prompt
      , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
      , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
+     , className =? "Xournalpp"                     --> doShift ( myWorkspaces !! 2 )
      , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 9 )
      , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      , isFullscreen -->  doFullFloat
@@ -457,18 +438,25 @@ myKeys =
         , ("M1-<F4>", spawn "arcolinux-logout")    -- Restarts xmonad
 #+END_SRC
 
-** Dmenu
+** Dmenu(Deprecated in favor of Rofi)
+** Rofi
+
 #+BEGIN_SRC haskell
-    -- Run Prompt
-        , ("M-S-<Return>", spawn mySearch) -- Dmenu
-        , ("M-p p", spawn "~/.scripts/dmenu/display")   -- display changing scripts
+-- Run Prompt
+    , ("M-S-<Return>", spawn mySearch) -- rofi
+    , ("M-p p", spawn "~/.scripts/rofi/display")   -- display changing scripts
+    , ("M-p a", spawn "~/.scripts/rofi/soundcard-choose")   -- choose default sink/source for audio
+    , ("M-p e", spawn "rofi -show emoji")  -- insert emoji
+    , ("M-p m", spawn "~/.scripts/rofi/mpc.sh")   -- choose music using mpd with mpc
+    , ("M-p b", spawn "~/.scripts/rofi/bluetooth")   -- using bluetoothcli scripts
+    , ("M-p w", spawn "~/.scripts/rofi/wifi")   --  connect network through nmcli scripts
 #+END_SRC
 
 ** Useful Programs Shortcuts
 
 #+BEGIN_SRC haskell
     -- Useful programs to have a keybinding for launch
-        , ("M-<Return>", spawn (myTerminal))
+        , ("M-<Return>", spawn myTerminal)
         , ("C-M1-w", spawn myBrowser)
         , ("C-M1-e", spawn myEditor)
         , ("C-M1-n", spawn myNote)
@@ -571,6 +559,7 @@ myKeys =
 #+END_SRC
 
 ** Emacs
+
 #+BEGIN_SRC haskell
     -- Emacs (CTRL-e followed by a key)
         , ("C-e e", spawn "emacsclient --eval '(emacs-everywhere)'")    -- emacs everywhere
@@ -578,22 +567,26 @@ myKeys =
         , ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'")))        -- dired
         , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))           -- eshell
 #+END_SRC
+
 ** Multimedia keys
 
 #+BEGIN_SRC haskell
     -- Multimedia Keys
-        , ("<XF86AudioPlay>", spawn "deadbeef --play-pause")
-        , ("<XF86AudioPrev>", spawn "deadbeef --prev")
-        , ("<XF86AudioNext>", spawn "deadbeef --next")
+       , ("<XF86AudioPlay>", spawn "playerctl play-pause")
+        , ("M-S-/", spawn "playerctl play-pause")
+        , ("<XF86AudioPrev>", spawn "playerctl previous")
+        , ("M-S-,", spawn "playerctl previous")
+        , ("<XF86AudioNext>", spawn "playerctl next")
+        , ("M-S-.", spawn "playerctl next")
         , ("<XF86AudioMute>", spawn "~/.scripts/system/pavolume.sh --togmute")
         , ("<XF86AudioLowerVolume>", spawn "~/.scripts/system/pavolume.sh --down")
         , ("<XF86AudioRaiseVolume>", spawn "~/.scripts/system/pavolume.sh --up")
-        , ("<XF86MonBrightnessUp>", spawn "lux -a 1000")
-        , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
+        , ("<XF86MonBrightnessUp>", spawn "lux -a 100")
+        , ("<XF86MonBrightnessDown>", spawn "lux -s 100")
         , ("<XF86TouchpadToggle>", spawn "$HOME/.scripts/system/touchpad-toggle")
-        , ("<Print>", spawn "flameshot gui")
-        , ("C-<Print>", spawn "flameshot screen -c")
-        , ("C-S-<Print>", spawn "flameshot full -c")
+        , ("<Print>", spawn "~/.scripts/system/print-screen -c")
+        , ("C-<Print>", spawn "~/.scripts/system/print-screen -w")
+        , ("C-S-<Print>", spawn "~/.scripts/system/print-screen -a")
         ]
     -- The following lines are needed for named scratchpads.
           where nonNSP          = WSIs (return (\ws -> W.tag ws /= "NSP"))

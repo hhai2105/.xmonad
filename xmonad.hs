@@ -90,7 +90,7 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 -- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myNote :: String;           -- Sets Handwritten Notetaking app
-myNote = "write_stylus";
+myNote = "xournalpp";
 
 myEmail :: String;           -- Sets default email client
 myEmail = "mailspring";
@@ -108,7 +108,7 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
 mySearch :: String;
-mySearch = "dmenu_run -i -nb '#0c0a20' -nf '#ff2afc' -sb '#ff2afc' -sf '#0c0a20' -fn 'NotoMonoRegular:pixelsize=25'"
+mySearch = "rofi -show run -m -4"
 
 myOffice :: String;
 myOffice = "libreoffice";
@@ -196,7 +196,6 @@ tall     = renamed [Replace "tall"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
            $ limitWindows 12
-           $ mySpacing 4
            $ ResizableTall 1 (3/100) (1/2) []
 floats   = renamed [Replace "floats"]
            $ windowNavigation
@@ -275,10 +274,12 @@ myManageHook = composeAll
      , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
      , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
      , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
-     , className =? "Mailspring"               --> doShift ( myWorkspaces !! 5 )
+     , className =? "Mailspring"                --> doShift ( myWorkspaces !! 5 )
+     , className =? "Gcr-prompter"              --> doShift ( myWorkspaces !! 5 ) -- mailspring's gnome keyring's password prompt
      , className =? "mpv"                       --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"                      --> doShift ( myWorkspaces !! 2 )
      , className =? "Write"                     --> doShift ( myWorkspaces !! 2 )
+     , className =? "Xournalpp"                     --> doShift ( myWorkspaces !! 2 )
      , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 9 )
      , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      , isFullscreen -->  doFullFloat
@@ -334,11 +335,16 @@ myKeys =
         , ("M1-<F4>", spawn "arcolinux-logout")    -- Restarts xmonad
 
 -- Run Prompt
-    , ("M-S-<Return>", spawn mySearch) -- Dmenu
-    , ("M-p p", spawn "~/.scripts/dmenu/display")   -- display changing scripts
+    , ("M-S-<Return>", spawn mySearch) -- rofi
+    , ("M-p p", spawn "~/.scripts/rofi/display")   -- display changing scripts
+    , ("M-p a", spawn "~/.scripts/rofi/soundcard-choose")   -- choose default sink/source for audio
+    , ("M-p e", spawn "rofi -show emoji")  -- insert emoji
+    , ("M-p m", spawn "~/.scripts/rofi/mpc.sh")   -- choose music using mpd with mpc
+    , ("M-p b", spawn "~/.scripts/rofi/bluetooth")   -- using bluetoothcli scripts
+    , ("M-p w", spawn "~/.scripts/rofi/wifi")   --  connect network through nmcli scripts
 
 -- Useful programs to have a keybinding for launch
-    , ("M-<Return>", spawn (myTerminal))
+    , ("M-<Return>", spawn myTerminal)
     , ("C-M1-w", spawn myBrowser)
     , ("C-M1-e", spawn myEditor)
     , ("C-M1-n", spawn myNote)
@@ -434,18 +440,21 @@ myKeys =
     , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))           -- eshell
 
 -- Multimedia Keys
-    , ("<XF86AudioPlay>", spawn "deadbeef --play-pause")
-    , ("<XF86AudioPrev>", spawn "deadbeef --prev")
-    , ("<XF86AudioNext>", spawn "deadbeef --next")
+   , ("<XF86AudioPlay>", spawn "playerctl play-pause")
+    , ("M-S-/", spawn "playerctl play-pause")
+    , ("<XF86AudioPrev>", spawn "playerctl previous")
+    , ("M-S-,", spawn "playerctl previous")
+    , ("<XF86AudioNext>", spawn "playerctl next")
+    , ("M-S-.", spawn "playerctl next")
     , ("<XF86AudioMute>", spawn "~/.scripts/system/pavolume.sh --togmute")
     , ("<XF86AudioLowerVolume>", spawn "~/.scripts/system/pavolume.sh --down")
     , ("<XF86AudioRaiseVolume>", spawn "~/.scripts/system/pavolume.sh --up")
-    , ("<XF86MonBrightnessUp>", spawn "lux -a 1000")
-    , ("<XF86MonBrightnessDown>", spawn "lux -s 1000")
+    , ("<XF86MonBrightnessUp>", spawn "lux -a 100")
+    , ("<XF86MonBrightnessDown>", spawn "lux -s 100")
     , ("<XF86TouchpadToggle>", spawn "$HOME/.scripts/system/touchpad-toggle")
-    , ("<Print>", spawn "flameshot gui")
-    , ("C-<Print>", spawn "flameshot screen -c")
-    , ("C-S-<Print>", spawn "flameshot full -c")
+    , ("<Print>", spawn "~/.scripts/system/print-screen -c")
+    , ("C-<Print>", spawn "~/.scripts/system/print-screen -w")
+    , ("C-S-<Print>", spawn "~/.scripts/system/print-screen -a")
     ]
 -- The following lines are needed for named scratchpads.
       where nonNSP          = WSIs (return (\ws -> W.tag ws /= "NSP"))
