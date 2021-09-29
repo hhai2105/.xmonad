@@ -80,7 +80,7 @@ myTerminal :: String
 myTerminal = "alacritty"    -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "qutebrowser"  -- Sets brave as browser
+myBrowser = "brave"  -- Sets brave as browser
 
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
@@ -115,6 +115,9 @@ myOffice = "libreoffice";
 
 myPass :: String;
 myPass = "bitwarden-desktop";
+
+myRecorder :: String;
+myRecorder = "obs";
 
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
@@ -272,6 +275,7 @@ myManageHook = composeAll
      , title =? "Messenger Call - Brave"        --> doShift ( myWorkspaces !! 6 )
      , className =? "zoom"                      --> doShift ( myWorkspaces !! 6 )
      , className =? "qutebrowser"               --> doShift ( myWorkspaces !! 3 )
+     , className =? "Brave-browser"             --> doShift ( myWorkspaces !! 3 )
      , className =? "Mail"                      --> doShift ( myWorkspaces !! 5 )
      , className =? "Thunderbird"               --> doShift ( myWorkspaces !! 5 )
      , className =? "Mailspring"                --> doShift ( myWorkspaces !! 5 )
@@ -343,10 +347,15 @@ myKeys =
     , ("M-p b", spawn "~/.scripts/rofi/bluetooth")   -- using bluetoothcli scripts
     , ("M-p w", spawn "~/.scripts/rofi/wifi")   --  connect network through nmcli scripts
 
+-- Run Prompt
+    , ("M-o o", spawn "~/.scripts/rofi/rofi-search/search search")   --  search the web using rofi
+    , ("M-o m", spawn "~/.scripts/rofi//rofi-search/search quickmark")   --  add quickmark to rofi
+
 -- Useful programs to have a keybinding for launch
     , ("M-<Return>", spawn myTerminal)
     , ("C-M1-w", spawn myBrowser)
     , ("C-M1-e", spawn myEditor)
+    , ("C-M1-r", spawn myRecorder)
     , ("C-M1-n", spawn myNote)
     , ("C-M1-m", spawn myEmail)
     , ("C-M1-o", spawn myOffice)
