@@ -4,6 +4,7 @@
 #+STARTUP: overview
 * Table Of Contents :toc:
 - [[#about-this-config][About This Config]]
+- [[#arch-linuxs-prerequisite][Arch linux's prerequisite]]
 - [[#imports][Imports]]
 - [[#variables][Variables]]
 - [[#autostart-the-startup-hook][Autostart (The Startup Hook)]]
@@ -33,6 +34,11 @@
 Xmonad is a dynamically tiling X11 window manager that is written and configured in Haskell.
 - XMonad Official Website: [[https://xmonad.org][https://xmonad.org]]
 
+* Arch linux's prerequisite
+xmonad
+haskell-dbus
+xmonad-contrib
+xmonad-utils
 * Imports
 These are Haskell modules that we must import so that we can use their functions later in the config.
 
@@ -454,6 +460,7 @@ myKeys =
     , ("M-p m", spawn "~/.scripts/rofi/mpc.sh")   -- choose music using mpd with mpc
     , ("M-p b", spawn "~/.scripts/rofi/bluetooth")   -- using bluetoothcli scripts
     , ("M-p w", spawn "~/.scripts/rofi/wifi")   --  connect network through nmcli scripts
+    , ("M-p t", spawn "~/.scripts/rofi/wacom")   --  configure drawing tablet
 #+END_SRC
 
 *** search 

@@ -346,6 +346,7 @@ myKeys =
     , ("M-p m", spawn "~/.scripts/rofi/mpc.sh")   -- choose music using mpd with mpc
     , ("M-p b", spawn "~/.scripts/rofi/bluetooth")   -- using bluetoothcli scripts
     , ("M-p w", spawn "~/.scripts/rofi/wifi")   --  connect network through nmcli scripts
+    , ("M-p t", spawn "~/.scripts/rofi/wacom")   --  configure tablet
 
 -- Run Prompt
     , ("M-o o", spawn "~/.scripts/rofi/rofi-search/search search")   --  search the web using rofi
