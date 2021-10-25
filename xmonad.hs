@@ -343,12 +343,13 @@ myKeys =
     , ("M-p p", spawn "~/.scripts/rofi/display")   -- display changing scripts
     , ("M-p a", spawn "~/.scripts/rofi/soundcard-choose")   -- choose default sink/source for audio
     , ("M-p e", spawn "rofi -show emoji")  -- insert emoji
-    , ("M-p m", spawn "~/.scripts/rofi/mpc.sh")   -- choose music using mpd with mpc
+    , ("M-p m", spawn "~/.scripts/rofi/rofi-music/music.sh")   -- choose music using mpd with mpc
     , ("M-p b", spawn "~/.scripts/rofi/bluetooth")   -- using bluetoothcli scripts
     , ("M-p w", spawn "~/.scripts/rofi/wifi")   --  connect network through nmcli scripts
-    , ("M-p t", spawn "~/.scripts/rofi/wacom")   --  configure tablet
+    , ("M-p t", spawn "~/.scripts/rofi/wacom")   --  configure drawing tablet
 
 -- Run Prompt
+    , ("M-o y", spawn "~/.scripts/rofi/rofi-youtube/rofi-youtube")   --  search youtube
     , ("M-o o", spawn "~/.scripts/rofi/rofi-search/search search")   --  search the web using rofi
     , ("M-o m", spawn "~/.scripts/rofi//rofi-search/search quickmark")   --  add quickmark to rofi
 
@@ -366,66 +367,66 @@ myKeys =
     , ("C-<F12>", spawn "wacom-side")
 
 --Toggle Polybar
-    , ("M-y", spawn $ "polybar-msg cmd toggle")
+	    , ("M-y", spawn $ "polybar-msg cmd toggle")
 
 -- Kill windows
-    , ("M-S-q", kill1)     -- Kill the currently focused client
+	    , ("M-S-q", kill1)     -- Kill the currently focused client
 
 -- Workspaces
-    , ("M-.", nextScreen)  -- Switch focus to next monitor
-    , ("M-,", prevScreen)  -- Switch focus to prev monitor
-    , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
-    , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
+	    , ("M-.", nextScreen)  -- Switch focus to next monitor
+	    , ("M-,", prevScreen)  -- Switch focus to prev monitor
+	    , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
+	    , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
 -- Floating windows
-    , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
-    , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
+	    , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
+	    , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
 
 -- Increase/decrease spacing (gaps)
-    , ("C-M1-j", decWindowSpacing 4)         -- Decrease window spacing
-    , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
-    , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
-    , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
+	    , ("C-M1-j", decWindowSpacing 4)         -- Decrease window spacing
+	    , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
+	    , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
+	    , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
 
 -- Windows navigation
-    , ("M-m", windows W.focusMaster)  -- Move focus to the master window
-    , ("M-j", windows W.focusDown)    -- Move focus to the next window
-    , ("M-k", windows W.focusUp)      -- Move focus to the prev window
-    , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
-    , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
-    , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
-    , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
-    , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
-    , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
+	    , ("M-m", windows W.focusMaster)  -- Move focus to the master window
+	    , ("M-j", windows W.focusDown)    -- Move focus to the next window
+	    , ("M-k", windows W.focusUp)      -- Move focus to the prev window
+	    , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
+	    , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
+	    , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
+	    , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
+	    , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
+	    , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
 
 -- Layouts
-    , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
-    , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
-    , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
+	    , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
+	    , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
+	    , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
 
 -- Increase/decrease windows in the master pane or the stack
-    , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
-    , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease # of clients master pane
-    , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
-    , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
+	    , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
+	    , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease # of clients master pane
+	    , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
+	    , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
 
 -- Window resizing
-    , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
-    , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
-    , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
-    , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
+	    , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
+	    , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
+	    , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
+	    , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
 
 -- Sublayouts
 -- This is used to push windows to tabbed sublayouts, or pull them out of it.
-    , ("M-C-h", sendMessage $ pullGroup L)
-    , ("M-C-l", sendMessage $ pullGroup R)
-    , ("M-C-k", sendMessage $ pullGroup U)
-    , ("M-C-j", sendMessage $ pullGroup D)
-    , ("M-C-m", withFocused (sendMessage . MergeAll))
-    -- , ("M-C-u", withFocused (sendMessage . UnMerge))
-    , ("M-C-/", withFocused (sendMessage . UnMergeAll))
-    , ("M-C-.", onGroup W.focusUp')    -- Switch focus to next tab
-    , ("M-C-,", onGroup W.focusDown')  -- Switch focus to prev tab
+	    , ("M-C-h", sendMessage $ pullGroup L)
+	    , ("M-C-l", sendMessage $ pullGroup R)
+	    , ("M-C-k", sendMessage $ pullGroup U)
+	    , ("M-C-j", sendMessage $ pullGroup D)
+	    , ("M-C-m", withFocused (sendMessage . MergeAll))
+-- , ("M-C-u", withFocused (sendMessage . UnMerge))
+	    , ("M-C-/", withFocused (sendMessage . UnMergeAll))
+	    , ("M-C-.", onGroup W.focusUp')    -- Switch focus to next tab
+	    , ("M-C-,", onGroup W.focusDown')  -- Switch focus to prev tab
 
 -- Scratchpads
 -- Toggle show/hide these programs.  They run on a hidden workspace.
@@ -459,8 +460,8 @@ myKeys =
     , ("<XF86AudioMute>", spawn "~/.scripts/system/pavolume.sh --togmute")
     , ("<XF86AudioLowerVolume>", spawn "~/.scripts/system/pavolume.sh --down")
     , ("<XF86AudioRaiseVolume>", spawn "~/.scripts/system/pavolume.sh --up")
-    , ("<XF86MonBrightnessUp>", spawn "lux -a 100")
-    , ("<XF86MonBrightnessDown>", spawn "lux -s 100")
+    , ("<XF86MonBrightnessUp>", spawn "lux -a 3%")
+    , ("<XF86MonBrightnessDown>", spawn "lux -s 3%")
     , ("<XF86TouchpadToggle>", spawn "$HOME/.scripts/system/touchpad-toggle")
     , ("<Print>", spawn "~/.scripts/system/print-screen -c")
     , ("C-<Print>", spawn "~/.scripts/system/print-screen -w")
