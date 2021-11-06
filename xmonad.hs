@@ -28,7 +28,7 @@ import qualified Data.Map as M
     -- Hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops  -- for some fullscreen events, also for xcomposite in obs.
-import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
 import XMonad.Hooks.ServerMode
 import XMonad.Hooks.SetWMName
@@ -367,66 +367,66 @@ myKeys =
     , ("C-<F12>", spawn "wacom-side")
 
 --Toggle Polybar
-	    , ("M-y", spawn $ "polybar-msg cmd toggle")
+        , ("M-y", spawn $ "polybar-msg cmd toggle")
 
 -- Kill windows
-	    , ("M-S-q", kill1)     -- Kill the currently focused client
+        , ("M-S-q", kill1)     -- Kill the currently focused client
 
 -- Workspaces
-	    , ("M-.", nextScreen)  -- Switch focus to next monitor
-	    , ("M-,", prevScreen)  -- Switch focus to prev monitor
-	    , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
-	    , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
+        , ("M-.", nextScreen)  -- Switch focus to next monitor
+        , ("M-,", prevScreen)  -- Switch focus to prev monitor
+        , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
+        , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
 -- Floating windows
-	    , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
-	    , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
+        , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
+        , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
 
 -- Increase/decrease spacing (gaps)
-	    , ("C-M1-j", decWindowSpacing 4)         -- Decrease window spacing
-	    , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
-	    , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
-	    , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
+        , ("C-M1-j", decWindowSpacing 4)         -- Decrease window spacing
+        , ("C-M1-k", incWindowSpacing 4)         -- Increase window spacing
+        , ("C-M1-h", decScreenSpacing 4)         -- Decrease screen spacing
+        , ("C-M1-l", incScreenSpacing 4)         -- Increase screen spacing
 
 -- Windows navigation
-	    , ("M-m", windows W.focusMaster)  -- Move focus to the master window
-	    , ("M-j", windows W.focusDown)    -- Move focus to the next window
-	    , ("M-k", windows W.focusUp)      -- Move focus to the prev window
-	    , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
-	    , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
-	    , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
-	    , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
-	    , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
-	    , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
+        , ("M-m", windows W.focusMaster)  -- Move focus to the master window
+        , ("M-j", windows W.focusDown)    -- Move focus to the next window
+        , ("M-k", windows W.focusUp)      -- Move focus to the prev window
+        , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
+        , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
+        , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
+        , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
+        , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
+        , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
 
 -- Layouts
-	    , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
-	    , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
-	    , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
+        , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
+        , ("M-<space>", sendMessage NextLayout)           -- Switch to next layout
+        , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
 
 -- Increase/decrease windows in the master pane or the stack
-	    , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
-	    , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease # of clients master pane
-	    , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
-	    , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
+        , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
+        , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease # of clients master pane
+        , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
+        , ("M-C-<Down>", decreaseLimit)                 -- Decrease # of windows
 
 -- Window resizing
-	    , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
-	    , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
-	    , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
-	    , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
+        , ("M-M1-h", sendMessage Shrink)                   -- Shrink horiz window width
+        , ("M-M1-l", sendMessage Expand)                   -- Expand horiz window width
+        , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
+        , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
 
 -- Sublayouts
 -- This is used to push windows to tabbed sublayouts, or pull them out of it.
-	    , ("M-C-h", sendMessage $ pullGroup L)
-	    , ("M-C-l", sendMessage $ pullGroup R)
-	    , ("M-C-k", sendMessage $ pullGroup U)
-	    , ("M-C-j", sendMessage $ pullGroup D)
-	    , ("M-C-m", withFocused (sendMessage . MergeAll))
+        , ("M-C-h", sendMessage $ pullGroup L)
+        , ("M-C-l", sendMessage $ pullGroup R)
+        , ("M-C-k", sendMessage $ pullGroup U)
+        , ("M-C-j", sendMessage $ pullGroup D)
+        , ("M-C-m", withFocused (sendMessage . MergeAll))
 -- , ("M-C-u", withFocused (sendMessage . UnMerge))
-	    , ("M-C-/", withFocused (sendMessage . UnMergeAll))
-	    , ("M-C-.", onGroup W.focusUp')    -- Switch focus to next tab
-	    , ("M-C-,", onGroup W.focusDown')  -- Switch focus to prev tab
+        , ("M-C-/", withFocused (sendMessage . UnMergeAll))
+        , ("M-C-.", onGroup W.focusUp')    -- Switch focus to next tab
+        , ("M-C-,", onGroup W.focusDown')  -- Switch focus to prev tab
 
 -- Scratchpads
 -- Toggle show/hide these programs.  They run on a hidden workspace.
@@ -460,8 +460,8 @@ myKeys =
     , ("<XF86AudioMute>", spawn "~/.scripts/system/pavolume.sh --togmute")
     , ("<XF86AudioLowerVolume>", spawn "~/.scripts/system/pavolume.sh --down")
     , ("<XF86AudioRaiseVolume>", spawn "~/.scripts/system/pavolume.sh --up")
-    , ("<XF86MonBrightnessUp>", spawn "lux -a 3%")
-    , ("<XF86MonBrightnessDown>", spawn "lux -s 3%")
+    , ("<XF86MonBrightnessUp>", spawn "lux -a 1%")
+    , ("<XF86MonBrightnessDown>", spawn "lux -s 1%")
     , ("<XF86TouchpadToggle>", spawn "$HOME/.scripts/system/touchpad-toggle")
     , ("<Print>", spawn "~/.scripts/system/print-screen -c")
     , ("C-<Print>", spawn "~/.scripts/system/print-screen -w")
@@ -478,13 +478,8 @@ main = do
     _ <- D.requestName dbus (D.busName_ "org.xmonad.Log")
         [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
     -- the xmonad, ya know...what the WM is named after!
-    xmonad $ ewmh def
+    xmonad $ docks $ ewmh def
         { manageHook            = myManageHook <+> manageDocks
-        , handleEventHook       = docksEventHook
-                               -- Uncomment this line to enable works perfect on SINGLE monitor systems. On multi-monitor systems,
-                               -- it adds a border around the window if screen does not have focus. So, my solution
-                               -- is to use a keybinding to toggle fullscreen noborders instead.  (M-<Space>)
-                               -- <+> fullscreenEventHook
         , modMask               = myModMask
         , terminal              = myTerminal
         , startupHook           = myStartupHook
